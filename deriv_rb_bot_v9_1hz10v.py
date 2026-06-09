@@ -1002,6 +1002,11 @@ class LiveTrader:
             "session_wr"         : round(wr, 2),
         })
 
+
+        # Recalibrate barriers in background after every trade
+        threading.Thread(target=self._calibrate_barriers,
+                         daemon=True, name="BarrierRecal").start()
+
         # Risk checks
         if not self._risk_ok():
             log.warning("[Risk] Risk limit hit — stopping.")
